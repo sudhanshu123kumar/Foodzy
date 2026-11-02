@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 public class PageResponse<T> {
 
-    private List<T> productData;
+    private List<T> items;
 
     private Integer pageNumber;
 

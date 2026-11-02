@@ -190,7 +190,7 @@ public class ProductServiceImpl implements ProductService {
                 }).collect(Collectors.toList());
 
         return PageResponse.<ProductSimpleResponseDto>builder()
-                .productData(productSimpleResponseDtos)
+                .items(productSimpleResponseDtos)
                 .pageNumber(productPage.getNumber())
                 .pageSize(productPage.getSize())
                 .totalElements(productPage.getTotalElements())
@@ -253,7 +253,7 @@ public class ProductServiceImpl implements ProductService {
 
 
         return PageResponse.<ProductSimpleResponseDto>builder()
-                .productData(productSimpleResponseDtos)
+                .items(productSimpleResponseDtos)
                 .pageNumber(productPage.getNumber())
                 .pageSize(productPage.getSize())
                 .totalElements(productPage.getTotalElements())

@@ -124,7 +124,7 @@ public class CategoryServiceImpl implements CategoryService {
                }).collect(Collectors.toList());
 
        return PageResponse.<CategoryDtoSimpleResponse>builder()
-               .productData(categoryDtoSimpleResponses)
+               .items(categoryDtoSimpleResponses)
                .pageNumber(categories.getNumber())
                .pageSize(categories.getSize())
                .totalElements(categories.getTotalElements())

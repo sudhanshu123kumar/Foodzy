@@ -47,6 +47,7 @@ It provides secure authentication using JWT and support E-Commerce operation suc
 - Get Product By Id
 - Get All Products
 - Search Products
+- Pagination Support
 
 ## Cart
 
@@ -66,8 +67,16 @@ It provides secure authentication using JWT and support E-Commerce operation suc
 
 ## Payment
 
-- Create Payment
-- Get Payment By Order
+- Create Payment for an Order
+- Cash on Delivery (COD) Support
+- Razorpay Payment Gateway Integration
+- Create Razorpay Order
+- Verify Payment Signature
+- Validate Payment Amount and Currency
+- Check Payment Status
+- Prevent Duplicate Transactions
+- Get Payment By Order ID
+- User-Based Payment Authorization
 
 ## Admin Dashboard
 
@@ -193,6 +202,7 @@ PUT    /api/products/{id}
 GET    /api/products
 GET    /api/products/{id}
 GET    /api/products/search
+GET /api/products?page=0&size=10
 DELETE /api/products/{id}
 ```
 
@@ -220,8 +230,9 @@ GET    /api/orders
 ## Payment
 
 ```
-POST   /api/payment/create
-GET    /api/payment/order/{orderId}
+POST   /api/payments/create
+POST   /api/payments/verify
+GET    /api/payments/order/{orderId}
 ```
 
 ## Admin
@@ -245,6 +256,10 @@ spring.datasource.url=jdbc:mysql://localhost:3306/foodzy
 spring.datasource.username=root
 spring.datasource.password=your_password
 ```
+## Razorpay Configuration
+
+- razorpay.key.id=your_razorpay_key_id
+- razorpay.key.secret=your_razorpay_key_secret
 
 ## Build Project
 

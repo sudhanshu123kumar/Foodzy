@@ -28,5 +28,9 @@ public class PaymentResponseDto {
 
     private String transactionId;
 
+    private String gatewayOrderId;
+
+    private String razorpayKeyId;
+
     private LocalDateTime paymentDate;
 }

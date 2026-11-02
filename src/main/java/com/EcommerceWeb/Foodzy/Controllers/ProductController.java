@@ -164,7 +164,7 @@ public class ProductController {
 
         ApiResponse<PageResponse<ProductSimpleResponseDto>> apiResponse =
                 new ApiResponse<>(
-                        response.getProductData().isEmpty()
+                        response.getItems().isEmpty()
                         ?"No products found"
                          :"search products fetch successfully",
                         ResponseStatus.SUCCESS,

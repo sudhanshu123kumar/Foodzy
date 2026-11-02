@@ -1,6 +1,5 @@
 package com.EcommerceWeb.Foodzy.Mapper;
 
-import com.EcommerceWeb.Foodzy.Dto.PaymentRequestDto;
 import com.EcommerceWeb.Foodzy.Dto.PaymentResponseDto;
 import com.EcommerceWeb.Foodzy.Entities.Payment;
 import org.springframework.stereotype.Component;
@@ -18,6 +17,7 @@ public class PaymentMapper {
         responseDto.setPaymentMethod(payment.getPaymentMethod());
         responseDto.setPaymentStatus(payment.getPaymentStatus());
         responseDto.setTransactionId(payment.getTransactionId());
+        responseDto.setGatewayOrderId(payment.getGatewayOrderId());
         responseDto.setPaymentDate(payment.getPaymentDate());
 
         return responseDto;

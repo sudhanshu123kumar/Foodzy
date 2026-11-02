@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
               }).collect(Collectors.toList());
 
       return PageResponse.<UserDtoResponse>builder()
-              .productData(userDtos)
+              .items(userDtos)
               .pageNumber(users.getNumber())
               .pageSize(users.getSize())
               .totalElements(users.getTotalElements())

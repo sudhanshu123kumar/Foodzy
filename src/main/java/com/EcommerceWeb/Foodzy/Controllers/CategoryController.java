@@ -3,6 +3,7 @@ package com.EcommerceWeb.Foodzy.Controllers;
 import com.EcommerceWeb.Foodzy.Dto.CategoryDtoRequest;
 import com.EcommerceWeb.Foodzy.Dto.CategoryDtoFullResponse;
 import com.EcommerceWeb.Foodzy.Dto.CategoryDtoSimpleResponse;
+import com.EcommerceWeb.Foodzy.Dto.ProductSimpleResponseDto;
 import com.EcommerceWeb.Foodzy.Enum.ResponseStatus;
 import com.EcommerceWeb.Foodzy.Payload.ApiResponse;
 import com.EcommerceWeb.Foodzy.Payload.PageResponse;
@@ -37,11 +38,18 @@ public class CategoryController {
             description = "Creates a new category along with its image."
     )
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<CategoryDtoSimpleResponse> createCategory(@Valid @RequestPart("category") CategoryDtoRequest categoryDtoRequest
+    public ResponseEntity<ApiResponse<CategoryDtoSimpleResponse>> createCategory(@Valid @RequestPart("category") CategoryDtoRequest categoryDtoRequest
             ,@RequestPart("image") MultipartFile image){
 
         CategoryDtoSimpleResponse response = this.categoryService.createCategory(categoryDtoRequest, image);
-        return new ResponseEntity<CategoryDtoSimpleResponse>(response, HttpStatus.CREATED);
+
+        ApiResponse<CategoryDtoSimpleResponse> apiResponse =
+                new ApiResponse<>(
+                        "category created successfully",
+                        ResponseStatus.CREATE,
+                        response
+                );
+        return new ResponseEntity<ApiResponse<CategoryDtoSimpleResponse>>(apiResponse, HttpStatus.CREATED);
     }
 
     @Operation(
@@ -49,11 +57,18 @@ public class CategoryController {
             description = "Updates an existing category and its image."
     )
     @PutMapping(value = "/{categoryId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<CategoryDtoSimpleResponse> updateCategory(@Valid @RequestPart("category") CategoryDtoRequest categoryDtoRequest
+    public ResponseEntity<ApiResponse<CategoryDtoSimpleResponse>> updateCategory(@Valid @RequestPart("category") CategoryDtoRequest categoryDtoRequest
     ,@RequestPart("image") MultipartFile image, @PathVariable Long categoryId){
 
         CategoryDtoSimpleResponse updateCategory = this.categoryService.updateCategory(categoryDtoRequest, image,categoryId);
-        return new ResponseEntity<>(updateCategory, HttpStatus.OK);
+
+        ApiResponse<CategoryDtoSimpleResponse> apiResponse =
+                new ApiResponse<>(
+                        "category updated successfully",
+                        ResponseStatus.SUCCESS,
+                        updateCategory
+                );
+        return new ResponseEntity<ApiResponse<CategoryDtoSimpleResponse>>(apiResponse, HttpStatus.OK);
     }
 
     @Operation(
@@ -61,10 +76,17 @@ public class CategoryController {
             description = "Returns complete category details using category ID."
     )
     @GetMapping("/{categoryId}")
-    public ResponseEntity<CategoryDtoFullResponse> categoryGetById(@PathVariable Long categoryId){
+    public ResponseEntity<ApiResponse<CategoryDtoFullResponse>> categoryGetById(@PathVariable Long categoryId){
 
         CategoryDtoFullResponse category = this.categoryService.getCategoryById(categoryId);
-        return new ResponseEntity<CategoryDtoFullResponse>(category, HttpStatus.OK);
+
+        ApiResponse<CategoryDtoFullResponse> apiResponse =
+                new ApiResponse<>(
+                        "category find successfully",
+                        ResponseStatus.SUCCESS,
+                        category
+                );
+        return new ResponseEntity<ApiResponse<CategoryDtoFullResponse>>(apiResponse, HttpStatus.OK);
     }
 
     @Operation(
@@ -72,7 +94,7 @@ public class CategoryController {
             description = "Returns paginated list of all categories with sorting support."
     )
       @GetMapping("/")
-      public ResponseEntity<PageResponse<CategoryDtoSimpleResponse>> AllcategoryGet(
+      public ResponseEntity<ApiResponse<PageResponse<CategoryDtoSimpleResponse>>> AllcategoryGet(
               @RequestParam (value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false)
               Integer pageNumber,
               @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false)
@@ -89,7 +111,14 @@ public class CategoryController {
               sortBy,
               sortDir
       );
-      return new ResponseEntity<PageResponse<CategoryDtoSimpleResponse>>(categories, HttpStatus.OK);
+        ApiResponse<PageResponse<CategoryDtoSimpleResponse>> apiResponse =
+                new ApiResponse<>(
+                        "All categories find successfully",
+                        ResponseStatus.SUCCESS,
+                        categories
+                );
+
+      return new ResponseEntity<ApiResponse<PageResponse<CategoryDtoSimpleResponse>>>(apiResponse, HttpStatus.OK);
      }
 
     @Operation(
@@ -100,7 +129,8 @@ public class CategoryController {
     public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable Long categoryId){
 
          this.categoryService.deleteCategory(categoryId);
-        return new ResponseEntity<ApiResponse<Void>>(new ApiResponse("category deleted successFully", ResponseStatus.SUCCESS, null), HttpStatus.OK);
+
+        return new ResponseEntity<ApiResponse<Void>>(new ApiResponse("category deleted successFully", ResponseStatus.SUCCESS , null), HttpStatus.OK);
     }
 
 }

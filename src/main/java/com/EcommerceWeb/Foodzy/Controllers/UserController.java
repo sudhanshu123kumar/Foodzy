@@ -1,5 +1,6 @@
 package com.EcommerceWeb.Foodzy.Controllers;
 
+import com.EcommerceWeb.Foodzy.Dto.ProductSimpleResponseDto;
 import com.EcommerceWeb.Foodzy.Dto.UserDtoResponse;
 import com.EcommerceWeb.Foodzy.Dto.UserRegisterDto;
 import com.EcommerceWeb.Foodzy.Dto.UserUpdateDto;
@@ -37,12 +38,19 @@ public class UserController {
             description = "Returns details of currently authenticated user."
     )
     @GetMapping("/me")
-    public ResponseEntity<UserDtoResponse> getCurrentUser(){
+    public ResponseEntity<ApiResponse<UserDtoResponse>> getCurrentUser(){
 
         UserDtoResponse response =
                 userService.getCurrentUser();
 
-        return new ResponseEntity<UserDtoResponse>(response, HttpStatus.OK);
+        ApiResponse<UserDtoResponse> apiResponse =
+                new ApiResponse<>(
+                        "my profile open successfully",
+                        ResponseStatus.SUCCESS,
+                        response
+                );
+
+        return new ResponseEntity<ApiResponse<UserDtoResponse>>(apiResponse, HttpStatus.OK);
     }
 
     @Operation(
@@ -50,14 +58,21 @@ public class UserController {
             description = "Updates profile information of logged-in user."
     )
     @PutMapping("/me")
-    public ResponseEntity<UserDtoResponse> updateMyProfile(
+    public ResponseEntity<ApiResponse<UserDtoResponse>> updateMyProfile(
             @Valid @RequestBody UserUpdateDto userUpdateDto
     ){
 
         UserDtoResponse response =
                 userService.updateMyProfile(userUpdateDto);
 
-        return new ResponseEntity<UserDtoResponse>(response, HttpStatus.OK);
+        ApiResponse<UserDtoResponse> apiResponse =
+                new ApiResponse<>(
+                        "my profile updated successfully",
+                        ResponseStatus.SUCCESS,
+                        response
+                );
+
+        return new ResponseEntity<ApiResponse<UserDtoResponse>>(apiResponse, HttpStatus.OK);
     }
 
 
@@ -68,10 +83,18 @@ public class UserController {
             description = "Admin can fetch user details using user ID."
     )
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDtoResponse> getUserById(@PathVariable Long userId){
+    public ResponseEntity<ApiResponse<UserDtoResponse>> getUserById(@PathVariable Long userId){
 
        UserDtoResponse user =  this.userService.getUserById(userId);
-       return new ResponseEntity<UserDtoResponse>(user,HttpStatus.OK);
+
+        ApiResponse<UserDtoResponse> apiResponse =
+                new ApiResponse<>(
+                        "user find successfully",
+                        ResponseStatus.SUCCESS,
+                        user
+                );
+
+       return new ResponseEntity<ApiResponse<UserDtoResponse>>(apiResponse,HttpStatus.OK);
     }
 
     @Operation(
@@ -79,7 +102,7 @@ public class UserController {
             description = "Admin can view all users with pagination and sorting."
     )
     @GetMapping("/")
-    public ResponseEntity<PageResponse<UserDtoResponse>> getAllUser(
+    public ResponseEntity<ApiResponse<PageResponse<UserDtoResponse>>> getAllUser(
            @RequestParam (value = "pageSize", defaultValue = AppConstants.PAGE_NUMBER, required = false)
            Integer pageNumber,
            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false)
@@ -96,7 +119,16 @@ public class UserController {
                 sortBy,
                 sortDir
         );
-        return new ResponseEntity<PageResponse<UserDtoResponse>>(users, HttpStatus.OK);
+
+        ApiResponse<PageResponse<UserDtoResponse>> apiResponse =
+                new ApiResponse<>(
+                        users.getItems().isEmpty()
+                                ?"No Users found"
+                                :"Users fetch successfully",
+                        ResponseStatus.SUCCESS,
+                        users
+                );
+        return new ResponseEntity<ApiResponse<PageResponse<UserDtoResponse>>>(apiResponse, HttpStatus.OK);
     }
 
     @Operation(
@@ -110,15 +142,24 @@ public class UserController {
         return new ResponseEntity<ApiResponse<Void>>(new ApiResponse("user deleted successFully", ResponseStatus.SUCCESS, null), HttpStatus.OK);
     }
 
+
     @Operation(
             summary = "Update User",
             description = "Admin can update user details using user ID."
     )
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDtoResponse> updateUser(@RequestBody UserUpdateDto userUpdateDto,
+    public ResponseEntity<ApiResponse<UserDtoResponse>> updateUser(@RequestBody UserUpdateDto userUpdateDto,
                                                       @PathVariable Long userId){
 
         UserDtoResponse updateUser = this.userService.updateUser(userUpdateDto,userId);
-        return new ResponseEntity<>(updateUser,HttpStatus.OK);
+
+        ApiResponse<UserDtoResponse> apiResponse =
+                new ApiResponse<>(
+                        "user find successfully",
+                        ResponseStatus.SUCCESS,
+                        updateUser
+                );
+
+        return new ResponseEntity<ApiResponse<UserDtoResponse>>(apiResponse,HttpStatus.OK);
     }
 }

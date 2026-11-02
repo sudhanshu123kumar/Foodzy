@@ -29,6 +29,9 @@ public class Payment {
     @Column(nullable = false)
     private Double amount;
 
+    @Column(unique = true)
+    private String gatewayOrderId;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PaymentMethod paymentMethod;

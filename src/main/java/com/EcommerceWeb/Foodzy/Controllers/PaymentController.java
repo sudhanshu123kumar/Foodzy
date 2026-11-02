@@ -2,9 +2,11 @@ package com.EcommerceWeb.Foodzy.Controllers;
 
 import com.EcommerceWeb.Foodzy.Dto.PaymentRequestDto;
 import com.EcommerceWeb.Foodzy.Dto.PaymentResponseDto;
+import com.EcommerceWeb.Foodzy.Dto.PaymentVerificationDto;
 import com.EcommerceWeb.Foodzy.ServicesInterface.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +31,21 @@ public class PaymentController {
     )
     @PostMapping("/create")
     public ResponseEntity<PaymentResponseDto> createPayment(
-            @RequestBody PaymentRequestDto requestDto
+           @Valid @RequestBody PaymentRequestDto requestDto
     ) {
 
         PaymentResponseDto responseDto =
                 this.paymentService.createPayment(requestDto);
 
         return new ResponseEntity<PaymentResponseDto>(responseDto, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<PaymentResponseDto> verifyPayment(
+            @Valid @RequestBody PaymentVerificationDto request) {
+
+        return ResponseEntity.ok(
+                paymentService.verifyPayment(request));
     }
 
     @Operation(
