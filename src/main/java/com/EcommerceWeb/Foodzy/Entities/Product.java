@@ -43,6 +43,11 @@ public class Product {
     private Boolean isAvailable = true;
 
     @ElementCollection
+    @CollectionTable(
+            name = "product_image_urls",
+            joinColumns = @JoinColumn(name = "product_id")
+    )
+    @Column(name = "image_url")
     private List<String> imageUrls;
 
     @ManyToOne(fetch = FetchType.LAZY)
